@@ -14,7 +14,7 @@ import os
 import pprint
 
 location = sys.argv[0]
-print(location)
+print location
 if location == 'Guildford':
 	TSbaseURL = 'https://api.thingspeak.com/update?api_key=W1SUNO795Y0QXY0E'   #Guildford
 	Lat = 51.4033
@@ -46,7 +46,7 @@ while 1:
 		except:
 			time.sleep(20)
 			NObsFailures = NObsFailures + 1
-			if NObsFailure == 10:
+			if NObsFailures == 10:
 				urllib2.urlopen('https://maker.ifttt.com/trigger/metreboot/with/key/fF_oXNFLzvmF_Rlpn1_NDiabvQobeCYJ_QVfX39DqbV')
 				os.system('sudo reboot')
 				#Reboot
