@@ -4,7 +4,7 @@ import time
 import datetime
 import urllib
 import urllib2
-
+6
 import sys
 sys.path.append('/home/ubuntu')
 import APIKeyManager
@@ -13,15 +13,16 @@ import os
 
 import pprint
 
-location = sys.argv[0]
+location = sys.argv[1]
 print location
 if location == 'Guildford':
 	TSbaseURL = 'https://api.thingspeak.com/update?api_key=W1SUNO795Y0QXY0E'   #Guildford
 	Lat = 51.4033
 	Long = -0.3375
-#TSbaseURL = 'https://api.thingspeak.com/update?api_key=W03HJ322D3OFBEG8'   #Rotherham
-#Lat = 53.4083859
-#Long = -1.3472005
+elif location == "Rotherham":
+	TSbaseURL = 'https://api.thingspeak.com/update?api_key=W03HJ322D3OFBEG8'   #Rotherham
+	Lat = 53.4083859
+	Long = -1.3472005
 M = metoffer.MetOffer(MetDataPointAPIKey)
 #x = M.nearest_loc_forecast(-0.5935112, 51.2339491, metoffer.THREE_HOURLY)
 
@@ -77,7 +78,7 @@ while 1:
 			lasttime = y.data_date	
 			bSendToTS = 0
 		except:
-			time.sleep(20)
+			time.sleep(30)
 			NTSFailures = NTSFailures + 1
 			if NTSFailures == 10:
 				urllib2.urlopen('https://maker.ifttt.com/trigger/tsreboot/with/key/fF_oXNFLzvmF_Rlpn1_NDiabvQobeCYJ_QVfX39DqbV')
