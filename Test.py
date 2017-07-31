@@ -13,9 +13,12 @@ import os
 
 import pprint
 
-TSbaseURL = 'https://api.thingspeak.com/update?api_key=W1SUNO795Y0QXY0E'   #Guildford
-Lat = 51.4033
-Long = -0.3375
+location = sys.argv[0]
+print(location)
+if location == 'Guildford':
+	TSbaseURL = 'https://api.thingspeak.com/update?api_key=W1SUNO795Y0QXY0E'   #Guildford
+	Lat = 51.4033
+	Long = -0.3375
 #TSbaseURL = 'https://api.thingspeak.com/update?api_key=W03HJ322D3OFBEG8'   #Rotherham
 #Lat = 53.4083859
 #Long = -1.3472005
