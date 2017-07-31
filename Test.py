@@ -77,4 +77,4 @@ while 1:
 				#reboot
 			
 	time.sleep(20)
-
+	bNeedNewObs = 1
