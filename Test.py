@@ -3,6 +3,8 @@ import metoffer
 import time
 import datetime
 import urllib
+import urllib2
+
 import sys
 sys.path.append('/home/ubuntu')
 import APIKeyManager
@@ -37,6 +39,7 @@ while 1:
 			time.sleep(20)
 			NObsFailures = NObsFailures + 1
 			if NObsFailure == 10:
+				urllib2.urlopen('https://maker.ifttt.com/trigger/metreboot/with/key/fF_oXNFLzvmF_Rlpn1_NDiabvQobeCYJ_QVfX39DqbV')
 				os.system('sudo reboot')
 				#Reboot
 		
@@ -69,6 +72,7 @@ while 1:
 			time.sleep(20)
 			NTSFailures = NTSFailures + 1
 			if NTSFailures == 10:
+				urllib2.urlopen('https://maker.ifttt.com/trigger/tsreboot/with/key/fF_oXNFLzvmF_Rlpn1_NDiabvQobeCYJ_QVfX39DqbV')
 				os.system('sudo reboot')
 				#reboot
 			
