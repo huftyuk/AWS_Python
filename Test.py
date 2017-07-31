@@ -13,10 +13,12 @@ import os
 
 import pprint
 
-TSbaseURL = 'https://api.thingspeak.com/update?api_key=W1SUNO795Y0QXY0E'
+TSbaseURL = 'https://api.thingspeak.com/update?api_key=W1SUNO795Y0QXY0E'   #Guildford
+#TSbaseURL = 'https://api.thingspeak.com/update?api_key=W03HJ322D3OFBEG8'   #Rotherham
 
 M = metoffer.MetOffer(MetDataPointAPIKey)
 #x = M.nearest_loc_forecast(-0.5935112, 51.2339491, metoffer.THREE_HOURLY)
+
 lasttime = datetime.datetime.now()
 print lasttime
 
@@ -32,7 +34,8 @@ while 1:
 	while bNeedNewObs:
 		try:
 			#Get some observations
-			x = M.nearest_loc_obs(51.4033, -0.3375)
+			x = M.nearest_loc_obs(51.4033, -0.3375)  #Guildford
+			#x = M.nearest_loc_obs(53.4083859,-1.3472005) #Rotherham
 			y = metoffer.parse_val(x)
 			bNeedNewObs = 0
 		except:
