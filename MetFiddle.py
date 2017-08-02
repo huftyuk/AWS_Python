@@ -92,7 +92,7 @@ while 1:
 	if bDweet:
 		try:
 			dweeturlstring = DweetbaseURL  + "TAmbient=" + TAmbient + "&pAmbient=" + pAmbient + "&vWind=" + vWind + "&TDewPoint=" + TDewPoint + "&rHumidity=" + rHumidity + "&NWeather=" + NWeather + "&xVisibility=" + xVisibility
-  			f = urllib.urlopen(urlstring)
+  			f = urllib.urlopen(dweeturlstring)
 			bDweet = 0
 		except:
 			print("Failed to dweet but who cares")
