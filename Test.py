@@ -72,8 +72,10 @@ while 1:
 			#pprint.pprint(y.data)
 			urlstring = TSbaseURL  + "&field1=" + TAmbient + "&field2=" + pAmbient + "&field3=" + vWind + "&field4=" + TDewPoint + "&field5=" + rHumidity + "&field6=" + NWeather + "&field7=" + xVisibility
 			print urlstring
-			f = urllib.urlopen(urlstring)
-			print f.read()
+			#f = urllib.urlopen(urlstring)
+			#print f.read()
+			dweeturlstring = "https://dweet.io/dweet/for/huftysweather?"  + "TAmbient=" + TAmbient + "&pAmbient=" + pAmbient + "&vWind=" + vWind + "&TDewPoint=" + TDewPoint + "&rHumidity=" + rHumidity + "&NWeather=" + NWeather + "&xVisibility=" + xVisibility
+			f = urllib.urlopen(dweeturlstring)
 			print("Temperature is " + str(y.data[0]["Temperature"][0]))
 			lasttime = y.data_date	
 			bSendToTS = 0
