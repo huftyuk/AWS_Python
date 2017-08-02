@@ -89,11 +89,12 @@ while 1:
 				os.system('sudo reboot')
 				#reboot
   
-  if bDweet:
-    try:			
-      	dweeturlstring = DweetbaseURL  + "TAmbient=" + TAmbient + "&pAmbient=" + pAmbient + "&vWind=" + vWind + "&TDewPoint=" + TDewPoint + "&rHumidity=" + rHumidity + "&NWeather=" + NWeather + "&xVisibility=" + xVisibility
+	if bDweet:
+		try:
+			dweeturlstring = DweetbaseURL  + "TAmbient=" + TAmbient + "&pAmbient=" + pAmbient + "&vWind=" + vWind + "&TDewPoint=" + TDewPoint + "&rHumidity=" + rHumidity + "&NWeather=" + NWeather + "&xVisibility=" + xVisibility
   			f = urllib.urlopen(urlstring)
-        bDweet = 0
-
+			bDweet = 0
+		except:
+			print("Failed to dweet but who cares")
 	time.sleep(20)
 	bNeedNewObs = 1
