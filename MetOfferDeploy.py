@@ -17,10 +17,12 @@ location = sys.argv[1]
 print location
 if location == 'Guildford':
 	TSbaseURL = 'https://api.thingspeak.com/update?api_key=W1SUNO795Y0QXY0E'   #Guildford
+	DweetbaseURL = "https://dweet.io/dweet/for/GuildfordWeatherSH?"
 	Lat = 51.4033
 	Long = -0.3375
 elif location == "Rotherham":
 	TSbaseURL = 'https://api.thingspeak.com/update?api_key=W03HJ322D3OFBEG8'   #Rotherham
+	DweetbaseURL = "https://dweet.io/dweet/for/RotherhamWeatherSH?"
 	Lat = 53.4083859
 	Long = -1.3472005
 M = metoffer.MetOffer(MetDataPointAPIKey)
@@ -56,9 +58,11 @@ while 1:
 	if lasttime == y.data_date:
 		print "No new data, keep going"
 		bSendToTS = 0
+		bDweet = 0
 	else:
 		bSendToTS = 1
-		
+		bDweet = 1
+    
 	while bSendToTS:
 		try:
 			TAmbient = str(y.data[0]["Temperature"][0])
@@ -84,6 +88,13 @@ while 1:
 				urllib2.urlopen('https://maker.ifttt.com/trigger/tsreboot/with/key/fF_oXNFLzvmF_Rlpn1_NDiabvQobeCYJ_QVfX39DqbV')
 				os.system('sudo reboot')
 				#reboot
-			
+  
+	if bDweet:
+		try:
+			dweeturlstring = DweetbaseURL  + "TAmbient=" + TAmbient + "&pAmbient=" + pAmbient + "&vWind=" + vWind + "&TDewPoint=" + TDewPoint + "&rHumidity=" + rHumidity + "&NWeather=" + NWeather + "&xVisibility=" + xVisibility
+  			f = urllib.urlopen(dweeturlstring)
+			bDweet = 0
+		except:
+			print("Failed to dweet but who cares")
 	time.sleep(20)
 	bNeedNewObs = 1
