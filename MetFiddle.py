@@ -17,12 +17,12 @@ location = sys.argv[1]
 print location
 if location == 'Guildford':
 	TSbaseURL = 'https://api.thingspeak.com/update?api_key=W1SUNO795Y0QXY0E'   #Guildford
-  DweetbaseURL = "https://dweet.io/dweet/for/GuildfordWeatherSH?"
-  Lat = 51.4033
+	DweetbaseURL = "https://dweet.io/dweet/for/GuildfordWeatherSH?"
+	Lat = 51.4033
 	Long = -0.3375
 elif location == "Rotherham":
 	TSbaseURL = 'https://api.thingspeak.com/update?api_key=W03HJ322D3OFBEG8'   #Rotherham
-  DweetbaseURL = "https://dweet.io/dweet/for/RotherhamWeatherSH?"
+	DweetbaseURL = "https://dweet.io/dweet/for/RotherhamWeatherSH?"
 	Lat = 53.4083859
 	Long = -1.3472005
 M = metoffer.MetOffer(MetDataPointAPIKey)
