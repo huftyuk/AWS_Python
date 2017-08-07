@@ -24,3 +24,8 @@ Website to run on my AWS server
 https://askubuntu.com/questions/767504/permissions-problems-with-var-www-html-and-my-own-home-directory-for-a-website
 
 >>>>>>> 93460c1c6af62d6bd2a1a5b0c0eba4a9bcb18b0c
+
+
+https://dev.mysql.com/doc/connector-python/en/connector-python-example-ddl.html
+
+
