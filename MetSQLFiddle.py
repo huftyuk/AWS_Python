@@ -29,8 +29,8 @@ add_obs = ("INSERT INTO observations "
  		"(Loc, tObs, TAmbient, pAmbient, rHumidity) "
  		"VALUES (%s, %s, %s, %s, %s)")
 
-#for site in sites:
-site = sites[1]
+for site in sites:
+#site = sites[1]
 	try:
 		#Start by seeing if we can get the data we want.
 		x = M.loc_observations(site.ident)
@@ -50,7 +50,7 @@ site = sites[1]
 				fieldnamestring = fieldnamestring + ", " + data
 				formatstring = formatstring + ", %s" 
 			
-		addobs_string = ("INSERT INTO observations " + fieldnames + ") " + values + ")" )
+		addobs_string = ("INSERT INTO observations " + fieldnamestring + ") " + formatstring + ")" )
 		obsdata_list = (obsdata_list,y.data[-1][data][0])
 
 		print addobs_string
