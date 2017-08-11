@@ -31,6 +31,7 @@ add_obs = ("INSERT INTO observations "
 
 for site in sites:
 #site = sites[1]
+
 	try:
 		#Start by seeing if we can get the data we want.
 		x = M.loc_observations(site.ident)
@@ -49,16 +50,20 @@ for site in sites:
 		for data in y.data[-1]:
 				fieldnamestring = fieldnamestring + ", " + data
 				formatstring = formatstring + ", %s" 
+				obsdata_list = (obsdata_list,y.data[-1][data][0])
 			
-		addobs_string = ("INSERT INTO observations " + fieldnamestring + ") " + formatstring + ")" )
-		obsdata_list = (obsdata_list,y.data[-1][data][0])
+		addobs_string = ("INSERT INTO observations2 " + fieldnamestring + ") " + formatstring + ")" )
 
 		print addobs_string
 		print add_obs
 		print obsdata_list
+		cursor.execute(addobsstring, obsdata_list)
+		NObs = cursor.lastrowid
+		print NObs
+		cnx.commit()
 		
 		try:
-			TAmbient = str(y.data[-1]["Temperature"][0])
+			TAmbient = str(y.dadta[-1]["Temperature"][0])
 			pAmbient = str(y.data[-1]["Pressure"][0])
 #			vWind = str(y.data[0]["Wind Speed"][0])
 #			TDewPoint = str(y.data[0]["Dew Point"][0])

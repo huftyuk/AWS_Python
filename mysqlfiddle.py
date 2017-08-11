@@ -19,7 +19,7 @@ cnx = mysql.connector.connect(**RDSLogin)
 cursor = cnx.cursor()
 
 
-DB_NAME = 'WeatherFiddle'
+DB_NAME = 'WeatherFiddle2'
 
 
 try:
@@ -47,7 +47,25 @@ TABLES['observations'] = (
     " PRIMARY KEY (`NObs`)"
     ") ENGINE=InnoDB")
 
+TABLES = {}
+TABLES['observations2'] = (
+    "CREATE TABLE `observations2` ("
+    " `NObs` int(11) NOT NULL AUTO_INCREMENT,"
+    " `timestamp` datetime NOT NULL,"
+    " `Location` varchar(30) NOT NULL,"
+    " `Temperature` float,"
+    " `Pressure` int,"
+    " `Screen Relative Humidity` float,"
+    " `Wind Speed` float,"
+    " `Visibility` float,"
+    " `Dew Point` float,"
+    " `Pressure Tendency` float,"
+    " `Weather Type` int,"
+    " `Wind Direction` varchar(4),"
+    " PRIMARY KEY (`NObs`)"
+    ") ENGINE=InnoDB")
 
+	
 for name, ddl in TABLES.iteritems():
     try:
         print("Creating table {}: ".format(name))
@@ -65,8 +83,8 @@ for name, ddl in TABLES.iteritems():
 
 
 add_obs = ("INSERT INTO observations "
-               "(tObs, Loc, TAmbient, pAmbient, rHumidity) "
-               "VALUES (%s, %s, %s, %s, %s)")
+              "(tObs, Loc, TAmbient, pAmbient, rHumidity) "
+              "VALUES (%s, %s, %s, %s, %s)")
 
 
 
@@ -77,7 +95,7 @@ obs_data = (datetime.datetime.now(), 'Guildford', 10, 1000,  80)
 #cursor.execute(add_obs, obs_data)
 
 
-NObs = cursor.lastrowid
+#NObs = cursor.lastrowid
 
 cnx.commit()
 
