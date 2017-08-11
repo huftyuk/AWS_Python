@@ -41,8 +41,16 @@ for site in sites:
 		bkeepgoing = 0
 
 	if bkeepgoing:
-		for data in y.data:
-			print data
+			fieldnames = "("
+			values = "VALUES ("
+			
+		for data in y.data[-1]:
+				fieldnames = fieldnames + data + ", "
+				values = values + "%s, " 
+			
+		addobs_string = ("INSERT INTO observations " + fieldnames + ") " + values + ")" )
+		print addobs_string
+		print add_obs
 		try:
 			TAmbient = str(y.data[-1]["Temperature"][0])
 			pAmbient = str(y.data[-1]["Pressure"][0])
