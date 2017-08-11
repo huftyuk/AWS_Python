@@ -32,16 +32,18 @@ except mysql.connector.Error as err:
         print(err)
         exit(1)
 
+#cursor.execute("DROP TABLE `observations`")
+
 #If we get this far, we are game on..
 TABLES = {}
 TABLES['observations'] = (
     "CREATE TABLE `observations` ("
     " `NObs` int(11) NOT NULL AUTO_INCREMENT,"
     " `tObs` datetime NOT NULL,"
-    " `Loc` varchar(14) NOT NULL,"
-    " `TAmbient` int(4) NOT NULL,"
-    " `pAmbient` int(4) NOT NULL,"
-    " `rHumidity` int(3) NOT NULL,"
+    " `Loc` varchar(30) NOT NULL,"
+    " `TAmbient` float,"
+    " `pAmbient` int,"
+    " `rHumidity` float,"
     " PRIMARY KEY (`NObs`)"
     ") ENGINE=InnoDB")
 
@@ -72,7 +74,7 @@ add_obs = ("INSERT INTO observations "
 obs_data = (datetime.datetime.now(), 'Guildford', 10, 1000,  80)
 
 
-cursor.execute(add_obs, obs_data)
+#cursor.execute(add_obs, obs_data)
 
 
 NObs = cursor.lastrowid
@@ -83,6 +85,23 @@ print NObs
 
 
 
+
+query = ("SELECT NObs,Loc,tObs,TAmbient FROM observations "
+         "WHERE tObs BETWEEN %s AND %s")
+
+
+obs_start = datetime.datetime(2017, 8, 8,01,01,01)
+obs_end = datetime.datetime(2017, 8, 18,18,01,01)
+
+cursor.execute(query, (obs_start, obs_end))
+
+
+
+print cursor
+
+for (NObs, Loc, tObs,TAmbient) in cursor:
+  print("{}, {} at time {} was {}".format(
+    NObs, Loc, tObs,TAmbient))
 
 cursor.close()
 cnx.close()

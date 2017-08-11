@@ -65,13 +65,13 @@ while 1:
     
 	while bSendToTS:
 		try:
-			TAmbient = str(y.data[0]["Temperature"][0])
-			pAmbient = str(y.data[0]["Pressure"][0])
-			vWind = str(y.data[0]["Wind Speed"][0])
-			TDewPoint = str(y.data[0]["Dew Point"][0])
-			rHumidity = str(y.data[0]["Screen Relative Humidity"][0])
-			NWeather = str(y.data[0]["Weather Type"][0])
-			xVisibility = str(y.data[0]["Visibility"][0])
+			TAmbient = str(y.data[-1]["Temperature"][0])
+			pAmbient = str(y.data[-1]["Pressure"][0])
+			vWind = str(y.data[-1]["Wind Speed"][0])
+			TDewPoint = str(y.data[-1]["Dew Point"][0])
+			rHumidity = str(y.data[-1]["Screen Relative Humidity"][0])
+			NWeather = str(y.data[-1]["Weather Type"][0])
+			xVisibility = str(y.data[-1]["Visibility"][0])
 			#vWindGust = str(y.data[0]["Wind Gust"][0])
 			#pprint.pprint(y.data)
 			urlstring = TSbaseURL  + "&field1=" + TAmbient + "&field2=" + pAmbient + "&field3=" + vWind + "&field4=" + TDewPoint + "&field5=" + rHumidity + "&field6=" + NWeather + "&field7=" + xVisibility
