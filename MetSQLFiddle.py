@@ -41,7 +41,7 @@ for site in sites:
 		bkeepgoing = 0
 
 	if bkeepgoing:
-		for data in y.data:
+		for data in y.data[-1]:
 			print data
 		try:
 			TAmbient = str(y.data[-1]["Temperature"][0])
