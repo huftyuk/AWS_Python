@@ -45,55 +45,26 @@ for site in sites:
 	if bkeepgoing:
 		fieldnamestring = "(Location" 
 		formatstring = "VALUES (%s"
-		obsdata_list = (str(site.name))
+		obsdata_list = [str(site.name)]
 		
 		for data in y.data[-1]:
-				fieldnamestring = fieldnamestring + ", " + data
-				formatstring = formatstring + ", %s" 
-				obsdata_list = (obsdata_list,y.data[-1][data][0])
+			dataname = data
+			dataname = data.replace(" ", "_")
+#			print dataname
+			fieldnamestring = fieldnamestring + ", " + dataname
+			formatstring = formatstring + ", %s" 
+			obsdata_list.append(y.data[-1][data][0])
 			
 		addobs_string = ("INSERT INTO observations2 " + fieldnamestring + ") " + formatstring + ")" )
 
-		print addobs_string
-		print add_obs
-		print obsdata_list
-		cursor.execute(addobsstring, obsdata_list)
+#		print addobs_string
+#		print add_obs
+#		print tuple(obsdata_list)
+		cursor.execute(addobs_string, tuple(obsdata_list))
 		NObs = cursor.lastrowid
-		print NObs
+		print(str(NObs) + str(site.name))
 		cnx.commit()
 		
-		try:
-			TAmbient = str(y.dadta[-1]["Temperature"][0])
-			pAmbient = str(y.data[-1]["Pressure"][0])
-#			vWind = str(y.data[0]["Wind Speed"][0])
-#			TDewPoint = str(y.data[0]["Dew Point"][0])
-			rHumidity = str(y.data[-1]["Screen Relative Humidity"][0])
-#			NWeather = str(y.data[0]["Weather Type"][0])
-#			xVisibility = str(y.data[0]["Visibility"][0])
-			#vWindGust = str(y.data[0]["Wind Gust"][0])
-
-		except:
-			print "cant parse data"
-			pprint.pprint(y.data[0])
-			bkeepgoing = 0
-
-	if bkeepgoing:
-		try:
-			obs_data = (str(site.name),y.data[-1]["timestamp"][0],TAmbient,pAmbient,rHumidity)
-			print obs_data
-		except:
-			print("cant generate string " + site.name)
-			bkeepgoing = 0
-
-	if bkeepgoing:
-		try:
-			cursor.execute(add_obs, obs_data)
-			NObs = cursor.lastrowid
-			print NObs
-			cnx.commit()
-		except:
-			print("failed tocommit " +  site.name)
-
 cursor.close()
 cnx.close()
 

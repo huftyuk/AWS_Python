@@ -19,7 +19,7 @@ cnx = mysql.connector.connect(**RDSLogin)
 cursor = cnx.cursor()
 
 
-DB_NAME = 'WeatherFiddle2'
+DB_NAME = 'WeatherFiddle'
 
 
 try:
@@ -32,7 +32,7 @@ except mysql.connector.Error as err:
         print(err)
         exit(1)
 
-#cursor.execute("DROP TABLE `observations`")
+cursor.execute("DROP TABLE `observations2`")
 
 #If we get this far, we are game on..
 TABLES = {}
@@ -55,13 +55,14 @@ TABLES['observations2'] = (
     " `Location` varchar(30) NOT NULL,"
     " `Temperature` float,"
     " `Pressure` int,"
-    " `Screen Relative Humidity` float,"
-    " `Wind Speed` float,"
+    " `Screen_Relative_Humidity` float,"
+    " `Wind_Speed` float,"
     " `Visibility` float,"
-    " `Dew Point` float,"
-    " `Pressure Tendency` float,"
-    " `Weather Type` int,"
-    " `Wind Direction` varchar(4),"
+    " `Dew_Point` float,"
+    " `Pressure_Tendency` varchar(5),"
+    " `Weather_Type` int,"
+    " `Wind_Direction` varchar(4),"
+    " `Wind_Gust` float,"
     " PRIMARY KEY (`NObs`)"
     ") ENGINE=InnoDB")
 
