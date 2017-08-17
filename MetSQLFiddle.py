@@ -60,6 +60,16 @@ for site in sites:
 #		print addobs_string
 #		print add_obs
 #		print tuple(obsdata_list)
+
+#Now see if this is a new observation, or one we've seen before.
+	query = ("SELECT NObs FROM observations2 WHERE Location = " + str(site.name) + " AND timestamp = " + y.data[-1][data][0])
+	cursor.execute(query)
+
+	nmatch = 0
+	for (NObs) in cursor:
+		nmatch += 1
+	print nMatch
+	if nMatch > 0:
 		cursor.execute(addobs_string, tuple(obsdata_list))
 		NObs = cursor.lastrowid
 		print(str(NObs) + str(site.name))
