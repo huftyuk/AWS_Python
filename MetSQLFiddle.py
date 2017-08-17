@@ -62,8 +62,8 @@ for site in sites:
 #		print tuple(obsdata_list)
 
 #Now see if this is a new observation, or one we've seen before.
-	query = ("SELECT NObs FROM observations2 WHERE Location = " + str(site.name) + " AND timestamp = " + y.data[-1][data][0])
-	cursor.execute(query)
+	query = ("SELECT NObs FROM observations2 WHERE Location = " + str(site.name) + " AND timestamp = %s")
+	cursor.execute(query,y.data[-1]["timestamp"][0])
 
 	nmatch = 0
 	for (NObs) in cursor:
