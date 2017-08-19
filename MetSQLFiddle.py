@@ -62,19 +62,20 @@ for site in sites:
 #		print tuple(obsdata_list)
 
 #Now see if this is a new observation, or one we've seen before.
-	query = ("SELECT NObs FROM observations2 WHERE Location = " + str(site.name) + " AND timestamp = %s")
-	cursor.execute(query,y.data[-1]["timestamp"][0])
+		query = ("SELECT NObs FROM observations2 WHERE Location = %s AND timestamp = %s")
+		cursor.execute(query,(str(site.name),y.data[-1]["timestamp"][0]))
 
-	nmatch = 0
-	for (NObs) in cursor:
-		nmatch += 1
-	print nMatch
-	if nMatch > 0:
-		cursor.execute(addobs_string, tuple(obsdata_list))
-		NObs = cursor.lastrowid
-		print(str(NObs) + str(site.name))
-		cnx.commit()
-		
+		NMatch = 0
+		for (NObs) in cursor:
+			NMatch += 1
+		print NMatch
+		if NMatch == 0:
+			cursor.execute(addobs_string, tuple(obsdata_list))
+			NObs = cursor.lastrowid
+			print("Adding " + str(NObs) + " " + str(site.name))
+			cnx.commit()
+		else:
+			print ("Not duplicating" +  str(site.name))
 cursor.close()
 cnx.close()
 

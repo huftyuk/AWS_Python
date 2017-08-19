@@ -121,7 +121,7 @@ obs_end = datetime.datetime(2017, 8, 18,18,01,01)
 
 #cursor.execute(query, (obs_start, obs_end))
 
-query = ("SELECT timestamp, Temperature FROM observations2" " WHERE Location = 'Coningsby2'")
+query = ("SELECT timestamp, Temperature FROM observations2" " WHERE Location = 'Coningsby'")
 
 cursordict = cnx.cursor(dictionary =True)
 cursor.execute(query)
