@@ -58,6 +58,27 @@ TABLES['observations'] = (
     " `Wind_Gust` float,"
     " PRIMARY KEY (`NObs`)"
     ") ENGINE=InnoDB")
+
+TABLES = {}
+TABLES['forecast'] = (
+    "CREATE TABLE `observations` ("
+    " `NObs` int(11) NOT NULL AUTO_INCREMENT,"
+    " `timestamp` datetime NOT NULL,"
+    " `PublishTime` datetime NOT NULL,"
+    " `Location` varchar(30) NOT NULL,"
+    " `Temperature` float,"
+    " `Pressure` int,"
+    " `Screen_Relative_Humidity` float,"
+    " `Wind_Speed` float,"
+    " `Visibility` float,"
+    " `Dew_Point` float,"
+    " `Pressure_Tendency` varchar(5),"
+    " `Weather_Type` int,"
+    " `Wind_Direction` varchar(4),"
+    " `Wind_Gust` float,"
+    " PRIMARY KEY (`NObs`)"
+    ") ENGINE=InnoDB")
+
 	
 for name, ddl in TABLES.iteritems():
     try:
