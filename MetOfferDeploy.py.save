@@ -45,7 +45,6 @@ while 1:
 			#Get some observations
 			x = M.nearest_loc_obs(Lat, Long)
 			y = metoffer.parse_val(x)
-			pprint.pprint(y.data)
 			bNeedNewObs = 0
 		except:
 			time.sleep(20)

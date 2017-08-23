@@ -22,32 +22,50 @@ cursor = cnx.cursor()
 
 #Initialise Metoffer and get the list of sites available
 M = metoffer.MetOffer(MetDataPointAPIKey)
-sitelist = M.loc_forecast(metoffer.SITELIST)
+sitelist = M.loc_forecast(metoffer.SITELIST,metoffer.THREE_HOURLY)
 sites = metoffer.parse_sitelist(sitelist)
 
 add_obs = ("INSERT INTO forecast "
  		"(Loc, tObs, TAmbient, pAmbient, rHumidity) "
  		"VALUES (%s, %s, %s, %s, %s)")
 
-for site in sites:
+#for site in sites:
 #site = sites[1]
+#	print site.name
+#	try:
+	#Start by seeing if we can get the data we want.
+x3 = M.loc_forecast(sites[0].ident,metoffer.THREE_HOURLY)
+#pprint.pprint(x2["SiteRep"]["DV"]["Location"])
+#x3
+x = M.loc_forecast(metoffer.ALL,metoffer.THREE_HOURLY)
+pprint.pprint(x["SiteRep"]["DV"]["Location"][0])
 
-	try:
-		#Start by seeing if we can get the data we want.
-		x = M.loc_observations(site.ident)
-		y = metoffer.parse_val(x)
-		bkeepgoing = 1
-	except:
-		print "Parse val failed for some reason"
-		#So don't do anything more with this ste
-		bkeepgoing = 0
+#	print x.keys()
+for site in sites:
+#	pprint.pprint(x["SiteRep"])
+	print site.name
+	x2 = x3
+	x2["SiteRep"]["DV"]["Location"][0] = x["SiteRep"]["DV"]["Location"][0]
+#	pprint.pprint(x2)
+#	x2["SiteRep"]["DV"]
+#	print n
+	y = metoffer.parse_val(x2)
+	bkeepgoing = 1
+#	except:
+#		print "Parse val failed for some reason"
+#		#So don't do anything more with this ste
+#		bkeepgoing = 0
 
 	if bkeepgoing:
 		fieldnamestring = "(Location, PublishTime" 
 		formatstring = "VALUES (%s, %s"
 		obsdata_list = [str(site.name)]
-		obsdata_list.append = [y.data.date]
-		
+		publishtime = y.data_date
+		print publishtime
+		print y.data[-1]["timestamp"][0]
+		publushtime = datetime.datetime.strptime(publishtime,"%Y-%m-%dT%H:%M:%SZ")
+		obsdata_list.append(publushtime)
+#		pprint.pprint(y.data)
 		for data in y.data[-1]:
 			dataname = data
 			dataname = data.replace(" ", "_")
@@ -63,8 +81,8 @@ for site in sites:
 #		print tuple(obsdata_list)
 
 #Now see if this is a new observation, or one we've seen before.
-		query = ("SELECT NObs FROM observations2 WHERE Location = %s AND timestamp = %s")
-		cursor.execute(query,(str(site.name),y.data[-1]["timestamp"][0]))
+		query = ("SELECT NObs FROM forecasts WHERE Location = %s AND PublishTime = %s")
+		cursor.execute(query,(str(site.name),publushtime))
 
 		NMatch = 0
 		for (NObs) in cursor:
