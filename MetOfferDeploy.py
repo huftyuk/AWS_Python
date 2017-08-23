@@ -65,17 +65,44 @@ while 1:
 		bDweet = 1
     
 	while bSendToTS:
+			urlstring = TSbaseURL
 		try:
 			TAmbient = str(y.data[-1]["Temperature"][0])
+			urlstring = urlstring +  "&field1=" + TAmbient
+		except:
+			TAmbient = 0
+		try:
 			pAmbient = str(y.data[-1]["Pressure"][0])
+			urlstring = urlstring + "&field2=" + pAmbient
+		except:
+			pAmbient = 0
+		try:
 			vWind = str(y.data[-1]["Wind Speed"][0])
+			urlstring = urlstring + "&field3=" + vWind
+		except:
+			vWind = 0
+		try:
 			TDewPoint = str(y.data[-1]["Dew Point"][0])
+			urlstring = urlstring + "&field4=" + TDewPoint
+		except:
+			TDewPoint = 0
+		try:
 			rHumidity = str(y.data[-1]["Screen Relative Humidity"][0])
+			urlstring = urlstring + "&field5=" + rHumidity
+		except:
+			rHumidity = 0
+		try:
 			NWeather = str(y.data[-1]["Weather Type"][0])
+			urlstring = urlstring + "&field6=" + NWeather
+		except:
+			NWeather = 0
+		try:
 			xVisibility = str(y.data[-1]["Visibility"][0])
+			urlstring = urlstring + "&field7=" + xVisibility
+		except:
+			xVisibility = 0
 			#vWindGust = str(y.data[0]["Wind Gust"][0])
 			#pprint.pprint(y.data)
-			urlstring = TSbaseURL  + "&field1=" + TAmbient + "&field2=" + pAmbient + "&field3=" + vWind + "&field4=" + TDewPoint + "&field5=" + rHumidity + "&field6=" + NWeather + "&field7=" + xVisibility
 			print urlstring
 			f = urllib.urlopen(urlstring)
 			print f.read()
