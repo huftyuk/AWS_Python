@@ -90,7 +90,7 @@ for Location in x["SiteRep"]["DV"]["Location"]:
 #		print tuple(obsdata_list)
 
 #Now see if this is a new observation, or one we've seen before.
-		query = ("SELECT NObs FROM forecasts WHERE Location = %s AND PublishTime = %s")
+		query = ("SELECT NObs FROM forecasts WHERE LocationID = %s AND PublishTime = %s")
 		cursor.execute(query,(Location["i"],publushtime))
 
 		NMatch = 0
