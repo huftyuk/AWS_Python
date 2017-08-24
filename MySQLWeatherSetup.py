@@ -19,7 +19,7 @@ cnx = mysql.connector.connect(**RDSLogin)
 cursor = cnx.cursor()
 
 
-DB_NAME = 'WeatherFiddle'
+DB_NAME = 'Weather'
 
 try:
     cnx.database = DB_NAME 
@@ -32,34 +32,34 @@ except mysql.connector.Error as err:
         exit(1)
 
 		
-#cursor.execute("CREATE USER 'WeatherUser'@'%' IDENTIFIED BY 'WeatherPassword'")
+cursor.execute("CREATE USER 'WeatherUser'@'%' IDENTIFIED BY 'WeatherPassword'")
 #cursor.execute('GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER ON Weather.* TO 'WeatherUser'@'%'")
-#cursor.execute("GRANT ALL ON DjangoFiddle.* TO 'Django'@'%'")
+cursor.execute("GRANT ALL ON Weather.* TO 'WeatherUser'@'%'")
 
 		
-cursor.execute("DROP TABLE `forecasts`")
+#cursor.execute("DROP TABLE `forecasts`")
 
 #If we get this far, we are game on..
 TABLES = {}
 TABLES['observations'] = (
     "CREATE TABLE `observations` ("
-    " `NObs` int(11) NOT NULL AUTO_INCREMENT,"
+    " `NObs` int NOT NULL AUTO_INCREMENT,"
     " `timestamp` datetime NOT NULL,"
-    " `Location` varchar(30) NOT NULL,"
+    " `LocationID` mediumint NOT NULL,"
     " `Temperature` float,"
-    " `Pressure` int,"
+    " `Pressure` mediumint,"
     " `Screen_Relative_Humidity` float,"
-    " `Wind_Speed` float,"
-    " `Visibility` float,"
+    " `Wind_Speed` tinyint,"
+    " `Visibility` int,"
     " `Dew_Point` float,"
     " `Pressure_Tendency` varchar(5),"
-    " `Weather_Type` int,"
-    " `Wind_Direction` varchar(4),"
-    " `Wind_Gust` float,"
+    " `Weather_Type` tinyint,"
+    " `Wind_Direction` char(3),"
+    " `Wind_Gust` tinyint,"
     " PRIMARY KEY (`NObs`)"
     ") ENGINE=InnoDB")
 
-TABLES = {}
+#TABLES = {}
 TABLES['forecasts'] = (
     "CREATE TABLE `forecasts` ("
     " `NObs` int NOT NULL AUTO_INCREMENT,"
