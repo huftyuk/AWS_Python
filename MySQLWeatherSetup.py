@@ -65,7 +65,7 @@ TABLES['forecasts'] = (
     " `NObs` int(11) NOT NULL AUTO_INCREMENT,"
     " `timestamp` datetime NOT NULL,"
     " `PublishTime` datetime NOT NULL,"
-    " `Location` varchar(30) NOT NULL,"
+    " `Location` varchar(40) NOT NULL,"
     " `Temperature` float,"
     " `Pressure` int,"
     " `Feels_Like_Temperature` int,"

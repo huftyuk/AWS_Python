@@ -40,12 +40,24 @@ add_obs = ("INSERT INTO forecast "
 x = M.loc_forecast(metoffer.ALL,metoffer.THREE_HOURLY)
 #pprint.pprint(x["SiteRep"]["DV"]["Location"][0])
 
+for Location in x["SiteRep"]["DV"]["Location"]:
+	try:
+		a = str(Location["name"])
+	except:
+		print Location["name"]
+
+
+
 #	print x.keys()
 for Location in x["SiteRep"]["DV"]["Location"]:
 	x2 = x
+	try:
+		a = str(Location["name"])
+	except:
+		Location["name"] = "Somewhere odd"
 	x2["SiteRep"]["DV"]["Location"] = Location
 #	pprint.pprint(x["SiteRep"])
-	pprint.pprint(x2)
+#	pprint.pprint(x2)
 	y = metoffer.parse_val(x2)
 	bkeepgoing = 1
 #	except:

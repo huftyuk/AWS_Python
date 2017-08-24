@@ -65,7 +65,7 @@ while 1:
 		bDweet = 1
     
 	while bSendToTS:
-			urlstring = TSbaseURL
+		urlstring = TSbaseURL
 		try:
 			TAmbient = str(y.data[-1]["Temperature"][0])
 			urlstring = urlstring +  "&field1=" + TAmbient
@@ -80,7 +80,7 @@ while 1:
 			vWind = str(y.data[-1]["Wind Speed"][0])
 			urlstring = urlstring + "&field3=" + vWind
 		except:
-			vWind = 0
+			vWind = "0"
 		try:
 			TDewPoint = str(y.data[-1]["Dew Point"][0])
 			urlstring = urlstring + "&field4=" + TDewPoint
@@ -103,12 +103,13 @@ while 1:
 			xVisibility = 0
 			#vWindGust = str(y.data[0]["Wind Gust"][0])
 			#pprint.pprint(y.data)
+		try:
 			print urlstring
 			f = urllib.urlopen(urlstring)
 			print f.read()
 			print("Temperature is " + str(y.data[0]["Temperature"][0]))
 			lasttime = y.data_date	
-			time.sleep(1200)
+			time.sleep(1)
 			bSendToTS = 0
 		except:
 			time.sleep(30)
@@ -123,6 +124,7 @@ while 1:
 			dweeturlstring = DweetbaseURL  + "TAmbient=" + TAmbient + "&pAmbient=" + pAmbient + "&vWind=" + vWind + "&TDewPoint=" + TDewPoint + "&rHumidity=" + rHumidity + "&NWeather=" + NWeather + "&xVisibility=" + xVisibility
   			f = urllib.urlopen(dweeturlstring)
 			bDweet = 0
+			time.sleep(1200)
 		except:
 			print("Failed to dweet but who cares")
 	time.sleep(600)
