@@ -29,26 +29,8 @@ add_obs = ("INSERT INTO forecast "
  		"(Loc, tObs, TAmbient, pAmbient, rHumidity) "
  		"VALUES (%s, %s, %s, %s, %s)")
 
-#for site in sites:
-#site = sites[1]
-#	print site.name
-#	try:
-	#Start by seeing if we can get the data we want.
-#xtest = M.loc_forecast(sites[0].ident,metoffer.THREE_HOURLY)
-#pprint.pprint(xtest["SiteRep"]["DV"]["Location"])
-
 x = M.loc_forecast(metoffer.ALL,metoffer.THREE_HOURLY)
-#pprint.pprint(x["SiteRep"]["DV"]["Location"][0])
 
-for Location in x["SiteRep"]["DV"]["Location"]:
-	try:
-		a = str(Location["name"])
-	except:
-		print Location["name"]
-
-
-
-#	print x.keys()
 for Location in x["SiteRep"]["DV"]["Location"]:
 	x2 = x
 	try:
@@ -56,38 +38,23 @@ for Location in x["SiteRep"]["DV"]["Location"]:
 	except:
 		Location["name"] = "Somewhere odd"
 	x2["SiteRep"]["DV"]["Location"] = Location
-#	pprint.pprint(x["SiteRep"])
-#	pprint.pprint(x2)
-	y = metoffer.parse_val(x2)
-	bkeepgoing = 1
-#	except:
-#		print "Parse val failed for some reason"
-#		#So don't do anything more with this ste
-#		bkeepgoing = 0
 
-	if bkeepgoing:
+	try:
+		y = metoffer.parse_val(x2)
 		fieldnamestring = "(LocationID, PublishTime" 
 		formatstring = "VALUES (%s, %s"
 		obsdata_list = [Location["i"]]
 		publishtime = y.data_date
-		print publishtime
-		print y.data[-1]["timestamp"][0]
 		publushtime = datetime.datetime.strptime(publishtime,"%Y-%m-%dT%H:%M:%SZ")
 		obsdata_list.append(publushtime)
-#		pprint.pprint(y.data)
 		for data in y.data[-1]:
 			dataname = data
 			dataname = data.replace(" ", "_")
-#			print dataname
 			fieldnamestring = fieldnamestring + ", " + dataname
 			formatstring = formatstring + ", %s" 
 			obsdata_list.append(y.data[-1][data][0])
 			
 		addobs_string = ("INSERT INTO forecasts " + fieldnamestring + ") " + formatstring + ")" )
-
-#		print addobs_string
-#		print add_obs
-#		print tuple(obsdata_list)
 
 #Now see if this is a new observation, or one we've seen before.
 		query = ("SELECT NObs FROM forecasts WHERE LocationID = %s AND PublishTime = %s")
@@ -104,6 +71,8 @@ for Location in x["SiteRep"]["DV"]["Location"]:
 			cnx.commit()
 		else:
 			print ("Not duplicating" +  (str(Location["name"])))
+	except:
+		print "Something went wrong somewhere, skipping this one"
 cursor.close()
 cnx.close()
 
