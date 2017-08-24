@@ -91,7 +91,7 @@ for Location in x["SiteRep"]["DV"]["Location"]:
 			print("Adding " + str(NObs) + " " + (str(Location["name"])))
 			cnx.commit()
 		else:
-			print ("Not duplicating" +  (str(Location["name"]))
+			print ("Not duplicating" +  (str(Location["name"])))
 cursor.close()
 cnx.close()
 
