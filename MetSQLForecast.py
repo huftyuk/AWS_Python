@@ -88,10 +88,10 @@ for Location in x["SiteRep"]["DV"]["Location"]:
 		if NMatch == 0:
 			cursor.execute(addobs_string, tuple(obsdata_list))
 			NObs = cursor.lastrowid
-			print("Adding " + str(NObs) + " " + str(site.name))
+			print("Adding " + str(NObs) + " " + (str(Location["name"]))
 			cnx.commit()
 		else:
-			print ("Not duplicating" +  str(site.name))
+			print ("Not duplicating" +  (str(Location["name"]))
 cursor.close()
 cnx.close()
 
