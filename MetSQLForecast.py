@@ -66,9 +66,9 @@ for Location in x["SiteRep"]["DV"]["Location"]:
 #		bkeepgoing = 0
 
 	if bkeepgoing:
-		fieldnamestring = "(Location, PublishTime" 
+		fieldnamestring = "(LocationID, PublishTime" 
 		formatstring = "VALUES (%s, %s"
-		obsdata_list = [str(Location["name"])]
+		obsdata_list = [Location["i"]]
 		publishtime = y.data_date
 		print publishtime
 		print y.data[-1]["timestamp"][0]
@@ -91,7 +91,7 @@ for Location in x["SiteRep"]["DV"]["Location"]:
 
 #Now see if this is a new observation, or one we've seen before.
 		query = ("SELECT NObs FROM forecasts WHERE Location = %s AND PublishTime = %s")
-		cursor.execute(query,(str(Location["name"]),publushtime))
+		cursor.execute(query,(Location["i"],publushtime))
 
 		NMatch = 0
 		for (NObs) in cursor:
