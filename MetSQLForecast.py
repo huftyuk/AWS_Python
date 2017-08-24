@@ -79,7 +79,7 @@ for Location in x["SiteRep"]["DV"]["Location"]:
 
 #Now see if this is a new observation, or one we've seen before.
 		query = ("SELECT NObs FROM forecasts WHERE Location = %s AND PublishTime = %s")
-		cursor.execute(query,(str(site.name),publushtime))
+		cursor.execute(query,(str(Location["name"]),publushtime))
 
 		NMatch = 0
 		for (NObs) in cursor:
