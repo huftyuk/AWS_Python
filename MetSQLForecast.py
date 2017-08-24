@@ -34,21 +34,18 @@ add_obs = ("INSERT INTO forecast "
 #	print site.name
 #	try:
 	#Start by seeing if we can get the data we want.
-x3 = M.loc_forecast(sites[0].ident,metoffer.THREE_HOURLY)
-#pprint.pprint(x2["SiteRep"]["DV"]["Location"])
-#x3
+#xtest = M.loc_forecast(sites[0].ident,metoffer.THREE_HOURLY)
+#pprint.pprint(xtest["SiteRep"]["DV"]["Location"])
+
 x = M.loc_forecast(metoffer.ALL,metoffer.THREE_HOURLY)
-pprint.pprint(x["SiteRep"]["DV"]["Location"][0])
+#pprint.pprint(x["SiteRep"]["DV"]["Location"][0])
 
 #	print x.keys()
-for site in sites:
+for Location in x["SiteRep"]["DV"]["Location"]:
+	x2 = x
+	x2["SiteRep"]["DV"]["Location"] = Location
 #	pprint.pprint(x["SiteRep"])
-	print site.name
-	x2 = x3
-	x2["SiteRep"]["DV"]["Location"][0] = x["SiteRep"]["DV"]["Location"][0]
-#	pprint.pprint(x2)
-#	x2["SiteRep"]["DV"]
-#	print n
+	pprint.pprint(x2)
 	y = metoffer.parse_val(x2)
 	bkeepgoing = 1
 #	except:
