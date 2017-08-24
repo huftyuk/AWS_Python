@@ -62,26 +62,26 @@ TABLES['observations'] = (
 TABLES = {}
 TABLES['forecasts'] = (
     "CREATE TABLE `forecasts` ("
-    " `NObs` int(11) NOT NULL AUTO_INCREMENT,"
+    " `NObs` int NOT NULL AUTO_INCREMENT,"
     " `timestamp` datetime NOT NULL,"
     " `PublishTime` datetime NOT NULL,"
-    " `Location` varchar(40) NOT NULL,"
-    " `Temperature` float,"
-    " `Pressure` int,"
-    " `Feels_Like_Temperature` int,"
-    " `Screen_Relative_Humidity` float,"
-    " `Wind_Speed` float,"
+    " `LocationID` mediumint NOT NULL,"
+    " `Temperature` tinyint,"
+    " `Feels_Like_Temperature` tinyint,"
+    " `Screen_Relative_Humidity` tinyint,"
+    " `Wind_Speed` tinyint,"
     " `Visibility` char(4),"
-    " `Dew_Point` float,"
-    " `Pressure_Tendency` varchar(5),"
-    " `Weather_Type` int,"
-    " `Wind_Direction` varchar(4),"
-    " `Max_UV_Index` int,"
-    " `Precipitation_Probability` int,"
-    " `Wind_Gust` float,"
+    " `Dew_Point` tinyint,"
+    " `Weather_Type` tinyint,"
+    " `Wind_Direction` char(3),"
+    " `Max_UV_Index` tinyint,"
+    " `Precipitation_Probability` tinyint,"
+    " `Wind_Gust` smallint,"
     " PRIMARY KEY (`NObs`)"
     ") ENGINE=InnoDB")
 
+#    " `Pressure_Tendency` varchar(5),"
+#    " `Pressure` smallint,"
 	
 for name, ddl in TABLES.iteritems():
     try:
