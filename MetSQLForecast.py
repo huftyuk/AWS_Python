@@ -56,7 +56,7 @@ for Location in x["SiteRep"]["DV"]["Location"]:
 	if bkeepgoing:
 		fieldnamestring = "(Location, PublishTime" 
 		formatstring = "VALUES (%s, %s"
-		obsdata_list = [str(Location["name"]]
+		obsdata_list = [str(Location["name"])]
 		publishtime = y.data_date
 		print publishtime
 		print y.data[-1]["timestamp"][0]
