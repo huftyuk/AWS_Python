@@ -63,7 +63,6 @@ for Location in x["SiteRep"]["DV"]["Location"]:
 		NMatch = 0
 		for (NObs) in cursor:
 			NMatch += 1
-		print NMatch
 		if NMatch == 0:
 			cursor.execute(addobs_string, tuple(obsdata_list))
 			NObs = cursor.lastrowid
