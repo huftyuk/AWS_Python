@@ -10,7 +10,7 @@ import sys
 sys.path.append('/home/ubuntu')
 import APIKeyManager
 MetDataPointAPIKey = APIKeyManager.MetDataPoint
-RDSLogin = APIKeyManager.RDSLogin
+RDSLogin = APIKeyManager.RDSWeatherLogin
 
 import os
 
@@ -30,6 +30,7 @@ add_obs = ("INSERT INTO observations "
  		"VALUES (%s, %s, %s, %s, %s)")
 
 for site in sites:
+
 #site = sites[1]
 
 	try:
@@ -43,9 +44,9 @@ for site in sites:
 		bkeepgoing = 0
 
 	if bkeepgoing:
-		fieldnamestring = "(Location" 
+		fieldnamestring = "(LocationID" 
 		formatstring = "VALUES (%s"
-		obsdata_list = [str(site.name)]
+		obsdata_list = [int(y.ident)]
 		
 		for data in y.data[-1]:
 			dataname = data
@@ -55,20 +56,20 @@ for site in sites:
 			formatstring = formatstring + ", %s" 
 			obsdata_list.append(y.data[-1][data][0])
 			
-		addobs_string = ("INSERT INTO observations2 " + fieldnamestring + ") " + formatstring + ")" )
+		addobs_string = ("INSERT INTO observations " + fieldnamestring + ") " + formatstring + ")" )
 
 #		print addobs_string
 #		print add_obs
-#		print tuple(obsdata_list)
+		print tuple(obsdata_list)
 
 #Now see if this is a new observation, or one we've seen before.
-		query = ("SELECT NObs FROM observations2 WHERE Location = %s AND timestamp = %s")
-		cursor.execute(query,(str(site.name),y.data[-1]["timestamp"][0]))
+		query = ("SELECT NObs FROM observations WHERE LocationID = %s AND timestamp = %s")
+		print int(y.ident)
+		cursor.execute(query,int(y.ident),y.data[-1]["timestamp"][0])
 
 		NMatch = 0
 		for (NObs) in cursor:
 			NMatch += 1
-		print NMatch
 		if NMatch == 0:
 			cursor.execute(addobs_string, tuple(obsdata_list))
 			NObs = cursor.lastrowid

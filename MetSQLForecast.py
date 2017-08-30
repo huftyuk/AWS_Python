@@ -10,7 +10,7 @@ import sys
 sys.path.append('/home/ubuntu')
 import APIKeyManager
 MetDataPointAPIKey = APIKeyManager.MetDataPoint
-RDSLogin = APIKeyManager.RDSLogin
+RDSLogin = APIKeyManager.RDSWeatherLogin
 
 import os
 

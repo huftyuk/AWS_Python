@@ -32,12 +32,12 @@ except mysql.connector.Error as err:
         exit(1)
 
 		
-cursor.execute("CREATE USER 'WeatherUser'@'%' IDENTIFIED BY 'WeatherPassword'")
+#cursor.execute("CREATE USER 'WeatherUser'@'%' IDENTIFIED BY 'Secret'")
 #cursor.execute('GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER ON Weather.* TO 'WeatherUser'@'%'")
-cursor.execute("GRANT ALL ON Weather.* TO 'WeatherUser'@'%'")
+#cursor.execute("GRANT ALL ON Weather.* TO 'WeatherUser'@'%'")
 
 		
-#cursor.execute("DROP TABLE `forecasts`")
+cursor.execute("DROP TABLE `observations`")
 
 #If we get this far, we are game on..
 TABLES = {}
