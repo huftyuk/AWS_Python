@@ -14,12 +14,12 @@ def create_database(cursor):
         print("Failed creating database: {}".format(err))
         exit(1)
 
-RDSLogin = APIKeyManager.RDSLogin
+RDSLogin = APIKeyManager.RDSWeatherLogin
 cnx = mysql.connector.connect(**RDSLogin)
 cursor = cnx.cursor()
 
 
-DB_NAME = 'WeatherFiddle'
+DB_NAME = 'Weather'
 
 
 try:
@@ -89,46 +89,39 @@ for name, ddl in TABLES.iteritems():
 
 
 
-
+#Code to insert into a table
 add_obs = ("INSERT INTO observations "
               "(tObs, Loc, TAmbient, pAmbient, rHumidity) "
               "VALUES (%s, %s, %s, %s, %s)")
 
-
-
-
 obs_data = (datetime.datetime.now(), 'Guildford', 10, 1000,  80)
-
-
 #cursor.execute(add_obs, obs_data)
-
-
 #NObs = cursor.lastrowid
-
 cnx.commit()
 
-#print NObs
 
-
-
-
-query = ("SELECT NObs,Loc,tObs,TAmbient FROM observations "
-         "WHERE tObs BETWEEN %s AND %s")
-
-
-obs_start = datetime.datetime(2017, 8, 8,01,01,01)
-obs_end = datetime.datetime(2017, 8, 18,18,01,01)
-
+#Example of some queries
+#query = ("SELECT NObs,Loc,tObs,TAmbient FROM observations WHERE tObs BETWEEN %s AND %s")
+#obs_start = datetime.datetime(2017, 8, 8,01,01,01)
+#obs_end = datetime.datetime(2017, 8, 18,18,01,01)
+#query = ("SELECT NObs,Loc,tObs,TAmbient FROM observations WHERE tObs BETWEEN %s AND %s")
 #cursor.execute(query, (obs_start, obs_end))
 
-query = ("SELECT timestamp, Temperature FROM observations2" " WHERE Location = 'Coningsby'")
+#And another
+#query = ("SELECT timestamp, Temperature FROM observations2" " WHERE Location = 'Coningsby'")
+#cursor.execute(query)
 
-cursordict = cnx.cursor(dictionary =True)
+#nmatch = 0
+#for (timestamp, Temperature) in cursor:
+#  nmatch += 1
+#  print("{}, {}".format(
+#    timestamp,Temperature))
+
+#print nmatch
+
+#And another
+query = ("SELECT timestamp, Temperature FROM observations" " WHERE LocationID = 14")
 cursor.execute(query)
-
-#print cursordict
-
-#print len(cursordict["timestamp"])
 
 nmatch = 0
 for (timestamp, Temperature) in cursor:
@@ -137,6 +130,9 @@ for (timestamp, Temperature) in cursor:
     timestamp,Temperature))
 
 print nmatch
-cursordict.close()
+
+
+
+
 cursor.close()
 cnx.close()
