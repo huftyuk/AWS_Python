@@ -22,19 +22,12 @@ cursor = cnx.cursor()
 
 #Initialise Metoffer and get the list of sites available
 M = metoffer.MetOffer(MetDataPointAPIKey)
-sitelist = M.loc_forecast(metoffer.CAPABILITIES,metoffer.THREE_HOURLY)
-#sites = metoffer.parse_sitelist(sitelist)
-print sitelist
+ForecastList = M.loc_forecast(metoffer.CAPABILITIES,metoffer.THREE_HOURLY)
 
-x
+for Forecast in ForecastList:
+	x = M.loc_forecast(metoffer.ALL,metoffer.THREE_HOURLY,Forecast)
 
-add_obs = ("INSERT INTO forecast "
- 		"(Loc, tObs, TAmbient, pAmbient, rHumidity) "
- 		"VALUES (%s, %s, %s, %s, %s)")
-
-x = M.loc_forecast(metoffer.ALL,metoffer.THREE_HOURLY)
-print "sleeping"
-time.sleep(100)
+x2	
 x2 = x
 for Location in x["SiteRep"]["DV"]["Location"]:
 #	x2 = x
