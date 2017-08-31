@@ -120,14 +120,14 @@ cnx.commit()
 #print nmatch
 
 #And another
-query = ("SELECT timestamp, Temperature FROM observations" " WHERE LocationID = 14")
+query = ("SELECT timestamp, PublishTime, Temperature FROM forecasts" " WHERE LocationID = 14")
 cursor.execute(query)
 
 nmatch = 0
-for (timestamp, Temperature) in cursor:
+for (timestamp, PublishTime, Temperature) in cursor:
   nmatch += 1
-  print("{}, {}".format(
-    timestamp,Temperature))
+  print("{}, {}, {}".format(
+    timestamp,PublishTime,Temperature))
 
 print nmatch
 
