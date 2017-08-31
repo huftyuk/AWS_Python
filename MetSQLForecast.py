@@ -72,8 +72,8 @@ for Location in x["SiteRep"]["DV"]["Location"]:
 				cnx.commit()
 			else:
 				print ("Not duplicating" +  (str(Location["name"])))
-		except:
-			print "Something went wrong somewhere, skipping this one"
+	except:
+		print "Something went wrong somewhere, skipping this one"
 cursor.close()
 cnx.close()
 
