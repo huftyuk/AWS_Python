@@ -41,38 +41,39 @@ for Location in x["SiteRep"]["DV"]["Location"]:
 
 	try:
 		y = metoffer.parse_val(x2)
-		fieldnamestring = "(LocationID, PublishTime" 
-		formatstring = "VALUES (%s, %s"
-		obsdata_list = [Location["i"]]
 		publishtime = y.data_date
 		publushtime = datetime.datetime.strptime(publishtime,"%Y-%m-%dT%H:%M:%SZ")
-		obsdata_list.append(publushtime)
-		for data in y.data[-1]:
-			dataname = data
-			dataname = data.replace(" ", "_")
-			fieldnamestring = fieldnamestring + ", " + dataname
-			formatstring = formatstring + ", %s" 
-			obsdata_list.append(y.data[-1][data][0])
-			
-		addobs_string = ("INSERT INTO forecasts " + fieldnamestring + ") " + formatstring + ")" )
+		for forecast in y.data:
+			fieldnamestring = "(LocationID, PublishTime" 
+			formatstring = "VALUES (%s, %s"
+			obsdata_list = [Location["i"]]
+			obsdata_list.append(publushtime)
+			for data in forecast:
+				dataname = data
+				dataname = data.replace(" ", "_")
+				fieldnamestring = fieldnamestring + ", " + dataname
+				formatstring = formatstring + ", %s" 
+				obsdata_list.append(forecast[data][0])
+				
+			addobs_string = ("INSERT INTO forecasts " + fieldnamestring + ") " + formatstring + ")" )
 
-#Now see if this is a new observation, or one we've seen before.
-		query = ("SELECT NObs FROM forecasts WHERE LocationID = %s AND PublishTime = %s")
-		cursor.execute(query,(int(Location["i"]),publushtime))
-		print query
-#		cursor.execute(query)
-		NMatch = 0
-		for (NObs) in cursor:
-			NMatch += 1
-		if NMatch == 0:
-			cursor.execute(addobs_string, tuple(obsdata_list))
-			NObs = cursor.lastrowid
-			print("Adding " + str(NObs) + " " + (str(Location["name"])))
-			cnx.commit()
-		else:
-			print ("Not duplicating" +  (str(Location["name"])))
-	except:
-		print "Something went wrong somewhere, skipping this one"
+	#Now see if this is a new observation, or one we've seen before.
+			query = ("SELECT NObs FROM forecasts WHERE LocationID = %s AND PublishTime = %s")
+			cursor.execute(query,(int(Location["i"]),publushtime))
+			print query
+	#		cursor.execute(query)
+			NMatch = 0
+			for (NObs) in cursor:
+				NMatch += 1
+			if NMatch == 0:
+				cursor.execute(addobs_string, tuple(obsdata_list))
+				NObs = cursor.lastrowid
+				print("Adding " + str(NObs) + " " + (str(Location["name"])))
+				cnx.commit()
+			else:
+				print ("Not duplicating" +  (str(Location["name"])))
+		except:
+			print "Something went wrong somewhere, skipping this one"
 cursor.close()
 cnx.close()
 
