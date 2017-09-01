@@ -27,9 +27,10 @@ ForecastList = M.loc_forecast(metoffer.CAPABILITIES,metoffer.THREE_HOURLY)
 for Forecast in ForecastList["Resource"]["TimeSteps"]["TS"]:
 	print Forecast
 	x = M.loc_forecast(metoffer.ALL,metoffer.THREE_HOURLY,Forecast)
-	publishtime = x["SiteRep"]["DV"]["dataDate"]
-	publushtime = datetime.datetime.strptime(publishtime,"%Y-%m-%dT%H:%M:%SZ")
+	#publishtime = x["SiteRep"]["DV"]["dataDate"]
+	publishtime = datetime.datetime.strptime(x["SiteRep"]["DV"]["dataDate"],"%Y-%m-%dT%H:%M:%SZ")
 	forecasttime = datetime.datetime.strptime(Forecast,"%Y-%m-%dT%H:%M:%SZ")	
+	entrytime = datetime.datetime.now()
 	print forecasttime
 	print publushtime
 	#Now see if this is a new observation, or one we've seen before.
@@ -48,36 +49,31 @@ for Forecast in ForecastList["Resource"]["TimeSteps"]["TS"]:
 	if bContinue:
 		x2 = x
 		for Location in x["SiteRep"]["DV"]["Location"]:
-	#	x2 = x
 			try:
 				a = str(Location["name"])
 			except:
 				Location["name"] = "Somewhere odd"
 			x2["SiteRep"]["DV"]["Location"] = Location
-
 			try:
 				y = metoffer.parse_val(x2)
-			
-				if bContinue:
-					for forecast in y.data:
-						fieldnamestring = "(LocationID, PublishTime" 
-						formatstring = "VALUES (%s, %s"
-						obsdata_list = [Location["i"]]
-						obsdata_list.append(publushtime)
-						for data in forecast:
-							dataname = data
-							dataname = data.replace(" ", "_")
-							fieldnamestring = fieldnamestring + ", " + dataname
-							formatstring = formatstring + ", %s" 
-							obsdata_list.append(forecast[data][0])
+				fieldnamestring = "(LocationID, PublishTime, EntryTime" 
+				formatstring = "VALUES (%s, %s"
+				obsdata_list = [Location["i"]]
+				obsdata_list.append(publishtime)
+				obsdata_list.append(entrytime)
+				for data in y.data:
+					dataname = data
+					dataname = data.replace(" ", "_")
+					fieldnamestring = fieldnamestring + ", " + dataname
+					formatstring = formatstring + ", %s" 
+					obsdata_list.append(y.data[data][0])
 						
-						addobs_string = ("INSERT INTO forecasts " + fieldnamestring + ") " + formatstring + ")" )
-						cursor.execute(addobs_string, tuple(obsdata_list))
-						NObs = cursor.lastrowid
-			#Commit everything for this location
-			#	print Location["i"]
+				addobs_string = ("INSERT INTO forecasts " + fieldnamestring + ") " + formatstring + ")" )
+				cursor.execute(addobs_string, tuple(obsdata_list))
+				NObs = cursor.lastrowid
 			except:
-				print "Something went wrong somewhere, skipping this one"
+				print("Something went wrong somewhere, skipping " + Location["name"])
+		#Commit everything at this time stamp.
 		cnx.commit()
 cursor.close()
 cnx.close()
