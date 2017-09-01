@@ -37,7 +37,7 @@ except mysql.connector.Error as err:
 #cursor.execute("GRANT ALL ON Weather.* TO 'WeatherUser'@'%'")
 
 		
-cursor.execute("DROP TABLE `observations`")
+cursor.execute("DROP TABLE `forecasts`")
 
 #If we get this far, we are game on..
 TABLES = {}
@@ -65,6 +65,7 @@ TABLES['forecasts'] = (
     " `NObs` int NOT NULL AUTO_INCREMENT,"
     " `timestamp` datetime NOT NULL,"
     " `PublishTime` datetime NOT NULL,"
+    " `EntryTime` datetime NOT NULL,"
     " `LocationID` mediumint NOT NULL,"
     " `Temperature` tinyint,"
     " `Feels_Like_Temperature` tinyint,"
