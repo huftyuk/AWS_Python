@@ -12,6 +12,12 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 
+import sys
+sys.path.append('/home/ubuntu')
+import APIKeyManager
+RDSLogin = APIKeyManager.RDSDjangoLogin
+EC2Host = APIKeyManager.EC2Host
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -25,7 +31,7 @@ SECRET_KEY = ''
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['']
+ALLOWED_HOSTS = [EC2Host]
 
 
 # Application definition
@@ -78,8 +84,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'DjangoFiddle',
-	'USER': '',
-	'PASSWORD': '',
+	'USER': RDSLogin["user"],
+	'PASSWORD': RDSLogin["password"],
 	'HOST': 'testmysql.ch8rujwimmbf.eu-west-2.rds.amazonaws.com',
 	'PORT': '3306',
     }
