@@ -19,7 +19,7 @@ def test(request):
 class WeatherListView(ListView):
     model = Observations
 
-	def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs):
         context = super(WeatherListView, self).get_context_data(**kwargs)
         context['now'] = timezone.now()
         return context

@@ -1,0 +1,8 @@
+<h1>Observations</h1>
+<ul>
+{% for article in object_list %}
+    <li>{{ Observations.timestamp|date }} -  {{ Observations.Temperature }} - {{ Observations.Pressure }}</li>
+{% empty %}
+    <li>No articles yet.</li>
+{% endfor %}
+</ul>
