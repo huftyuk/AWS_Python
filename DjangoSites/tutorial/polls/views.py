@@ -14,7 +14,7 @@ def index(request):
     #return HttpResponse("Hello, world. You're at the polls index.")
 
     latest_obs_list = Observations.objects.order_by('-LocationID')[:5]
-    output = ', '.join([q.LocationID for q in latest_obs_list])
+    output = ', '.join([str(q.LocationID) for q in latest_obs_list])
     return HttpResponse(output)
 
 	
