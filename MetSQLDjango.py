@@ -5,6 +5,7 @@ import datetime
 import urllib
 import urllib2
 import mysql.connector
+import json
 
 import sys
 sys.path.append('/home/ubuntu')
@@ -22,61 +23,65 @@ cursor = cnx.cursor()
 
 #Initialise Metoffer and get the list of sites available
 M = metoffer.MetOffer(MetDataPointAPIKey)
-sitelist = M.loc_observations(metoffer.SITELIST)
-sites = metoffer.parse_sitelist(sitelist)
-
-add_obs = ("INSERT INTO polls_Observations "
- 		"(Loc, tObs, TAmbient, pAmbient, rHumidity) "
- 		"VALUES (%s, %s, %s, %s, %s)")
-
-for site in sites:
-
-#site = sites[1]
-
+ObservationsList = M.loc_observations(metoffer.CAPABILITIES)
+for Observation in ObservationsList["Resource"]["TimeSteps"]["TS"]:
+	print Observation
 	try:
-		#Start by seeing if we can get the data we want.
-		x = M.loc_observations(site.ident)
-		y = metoffer.parse_val(x)
-		bkeepgoing = 1
-	except:
-		print "Parse val failed for some reason"
-		#So don't do anything more with this ste
-		bkeepgoing = 0
-
-	if bkeepgoing:
-		fieldnamestring = "(LocationID" 
-		formatstring = "VALUES (%s"
-		obsdata_list = [int(y.ident)]
-		
-		for data in y.data[-1]:
-			dataname = data
-			dataname = data.replace(" ", "_")
-#			print dataname
-			fieldnamestring = fieldnamestring + ", " + dataname
-			formatstring = formatstring + ", %s" 
-			obsdata_list.append(y.data[-1][data][0])
-			
-		addobs_string = ("INSERT INTO polls_observations " + fieldnamestring + ") " + formatstring + ")" )
-
-#		print addobs_string
-#		print add_obs
-		print tuple(obsdata_list)
-
-#Now see if this is a new observation, or one we've seen before.
-		query = ("SELECT NObs FROM pollls_observations WHERE LocationID = %s AND timestamp = %s")
-		print int(y.ident)
-		cursor.execute(query,int(y.ident),y.data[-1]["timestamp"][0])
-
+		x = M.loc_observations(metoffer.ALL)
+		#publishtime = x["SiteRep"]["DV"]["dataDate"]
+		publishtime = datetime.datetime.strptime(x["SiteRep"]["DV"]["dataDate"],"%Y-%m-%dT%H:%M:%SZ")
+		observationtime = datetime.datetime.strptime(Observation,"%Y-%m-%dT%H:%M:%SZ")	
+		entrytime = datetime.datetime.now()
+		print observationtime
+		print publishtime
+		#Now see if this is a new observation, or one we've seen before.
+		query = ("SELECT NObs FROM polls_Observations WHERE timestamp = %s")
+		cursor.execute(query,(observationtime,))
 		NMatch = 0
 		for (NObs) in cursor:
 			NMatch += 1
 		if NMatch == 0:
-			cursor.execute(addobs_string, tuple(obsdata_list))
-			NObs = cursor.lastrowid
-			print("Adding " + str(NObs) + " " + str(site.name))
-			cnx.commit()
+			print("Adding records for current time stamp")
+			bContinue = 1
 		else:
-			print ("Not duplicating" +  str(site.name))
+			print ("Not duplicating current time stamp")
+			bContinue = 0
+	except:
+		print "Cant get observations"
+		bContinue = 0
+	
+	if bContinue:
+		x2 = x
+		for Location in x["SiteRep"]["DV"]["Location"]:
+			try:
+				a = str(Location["name"])
+			except:
+				Location["name"] = "Somewhere odd"
+			x2["SiteRep"]["DV"]["Location"] = Location
+			try:
+#			if 1:
+				y = metoffer.parse_val(x2)
+				fieldnamestring = "(LocationID" 
+				formatstring = "VALUES (%s, %s, %s"
+				obsdata_list = [Location["i"]]
+#				obsdata_list.append(publishtime)
+#				obsdata_list.append(entrytime)
+#				print y.data[0]
+				for data in y.data[0]:
+#					print data
+					dataname = data
+					dataname = data.replace(" ", "_")
+					fieldnamestring = fieldnamestring + ", " + dataname
+					formatstring = formatstring + ", %s" 
+					obsdata_list.append(y.data[0][data][0])
+						
+				addobs_string = ("INSERT INTO polls_Observations " + fieldnamestring + ") " + formatstring + ")" )
+				cursor.execute(addobs_string, tuple(obsdata_list))
+				NObs = cursor.lastrowid
+			except:
+				print("Something went wrong somewhere, skipping " + Location["name"])
+		#Commit everything at this time stamp.
+		cnx.commit()
 cursor.close()
 cnx.close()
 
