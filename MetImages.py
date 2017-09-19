@@ -21,9 +21,16 @@ import pprint
 #Initialise Metoffer and get the list of sites available
 M = metoffer.MetOffer(MetDataPointAPIKey)
 ImageList = M.stand_alone_imagery()
-pprint.pprint(ImageList)
-for Chart in M["BWSurfacePressureChartList"]:
-	print Chart["ProductURI"]
-
-#ForceastOverlayList = M.map_overlay_forecast()
+#print ImageList.keys
+#pprint.pprint(ImageList)
+for Chart in ImageList["BWSurfacePressureChartList"]["BWSurfacePressureChart"]:
+	URI = Chart["ProductURI"]
+	URI = URI.replace("{key}",MetDataPointAPIKey)
+	print URI
+ForecastOverlayList = M.map_overlay_forecast()
+#pprint.pprint(ForecastOverlayList["Layers"])
+print ForecastOverlayList["Layers"]["BaseUrl"]["$"]
+for Layer in ForecastOverlayList["Layers"]["Layer"]:
+	print Layer["@displayName"]
+	pprint.pprint(Layer)
 #ObservationOverlayList = map_overlay_obs()

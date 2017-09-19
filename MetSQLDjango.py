@@ -25,17 +25,18 @@ cursor = cnx.cursor()
 M = metoffer.MetOffer(MetDataPointAPIKey)
 ObservationsList = M.loc_observations(metoffer.CAPABILITIES)
 for Observation in ObservationsList["Resource"]["TimeSteps"]["TS"]:
-	print Observation
-	try:
+#	print Observation
+#	try:
+	if 1:
 		x = M.loc_observations(metoffer.ALL)
 		#publishtime = x["SiteRep"]["DV"]["dataDate"]
 		publishtime = datetime.datetime.strptime(x["SiteRep"]["DV"]["dataDate"],"%Y-%m-%dT%H:%M:%SZ")
 		observationtime = datetime.datetime.strptime(Observation,"%Y-%m-%dT%H:%M:%SZ")	
 		entrytime = datetime.datetime.now()
 		print observationtime
-		print publishtime
+#		print publishtime
 		#Now see if this is a new observation, or one we've seen before.
-		query = ("SELECT NObs FROM polls_Observations WHERE timestamp = %s")
+		query = ("SELECT NObs FROM polls_observations WHERE timestamp = %s")
 		cursor.execute(query,(observationtime,))
 		NMatch = 0
 		for (NObs) in cursor:
@@ -46,9 +47,9 @@ for Observation in ObservationsList["Resource"]["TimeSteps"]["TS"]:
 		else:
 			print ("Not duplicating current time stamp")
 			bContinue = 0
-	except:
-		print "Cant get observations"
-		bContinue = 0
+#	except:
+#		print "Cant get observations"
+#		bContinue = 0
 	
 	if bContinue:
 		x2 = x
@@ -58,11 +59,11 @@ for Observation in ObservationsList["Resource"]["TimeSteps"]["TS"]:
 			except:
 				Location["name"] = "Somewhere odd"
 			x2["SiteRep"]["DV"]["Location"] = Location
-			try:
-#			if 1:
+#			try:
+			if 1:
 				y = metoffer.parse_val(x2)
 				fieldnamestring = "(LocationID" 
-				formatstring = "VALUES (%s, %s, %s"
+				formatstring = "VALUES (%s"
 				obsdata_list = [Location["i"]]
 #				obsdata_list.append(publishtime)
 #				obsdata_list.append(entrytime)
@@ -75,11 +76,11 @@ for Observation in ObservationsList["Resource"]["TimeSteps"]["TS"]:
 					formatstring = formatstring + ", %s" 
 					obsdata_list.append(y.data[0][data][0])
 						
-				addobs_string = ("INSERT INTO polls_Observations " + fieldnamestring + ") " + formatstring + ")" )
+				addobs_string = ("INSERT INTO polls_observations " + fieldnamestring + ") " + formatstring + ")" )
 				cursor.execute(addobs_string, tuple(obsdata_list))
 				NObs = cursor.lastrowid
-			except:
-				print("Something went wrong somewhere, skipping " + Location["name"])
+#			except:
+#				print("Something went wrong somewhere, skipping " + Location["name"])
 		#Commit everything at this time stamp.
 		cnx.commit()
 cursor.close()
