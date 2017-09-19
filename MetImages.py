@@ -29,8 +29,17 @@ for Chart in ImageList["BWSurfacePressureChartList"]["BWSurfacePressureChart"]:
 	print URI
 ForecastOverlayList = M.map_overlay_forecast()
 #pprint.pprint(ForecastOverlayList["Layers"])
-print ForecastOverlayList["Layers"]["BaseUrl"]["$"]
+BaseURL = ForecastOverlayList["Layers"]["BaseUrl"]["$"]
+BaseURL = BaseURL.replace("{key}",MetDataPointAPIKey)
+
+print BaseURL
 for Layer in ForecastOverlayList["Layers"]["Layer"]:
 	print Layer["@displayName"]
-	pprint.pprint(Layer)
+	LayerURL = BaseURL.replace({"{LayerName}",Layer["Service"]["LayerName"]
+	print LayerURL
+	for TimeStep i  Layer["Service"]["TimeSteps"]["Timestep"]:
+		print TimeStep
+		URL = BaseURL.replace(
+	#pprint.pprint(Layer)
+	
 #ObservationOverlayList = map_overlay_obs()
