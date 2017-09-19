@@ -22,6 +22,8 @@ import pprint
 M = metoffer.MetOffer(MetDataPointAPIKey)
 ImageList = M.stand_alone_imagery()
 pprint.pprint(ImageList)
+for Chart in M["BWSurfacePressureChartList"]:
+	print Chart["ProductURI"]
 
 #ForceastOverlayList = M.map_overlay_forecast()
 #ObservationOverlayList = map_overlay_obs()
